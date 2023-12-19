@@ -7,4 +7,4 @@ import pymongo
 
 def def schools_by_topic(mongo_collection, topic):
     """ Where can I learn Python? """
-    return list(mongo_collection.find().sort({"topic":topic}))
+    return mongo_collection.find({"topic": topic})
