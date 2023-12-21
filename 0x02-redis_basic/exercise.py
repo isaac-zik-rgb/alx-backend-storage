@@ -34,6 +34,7 @@ Redis client as a private variable"""
         value = self._redis.get(key)
         return value.decode("utf-8")
 
+
 def get_int(self, key: str) -> int:
     '''parametrize Cache.get with correct conversion function'''
     value = self._redis.get(key)
