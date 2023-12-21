@@ -27,9 +27,9 @@ Redis client as a private variable"""
 
         retrive_data = self._redis.get(key)
 
-        if retrive_data is None:
-            return None
-        return fn(retrive_data)
+        if fn:
+            value = fn(retrive_data)
+        return value
 
     def get_str(self, key: str) -> str:
         '''parametrize Cache.get with correct conversion function'''
