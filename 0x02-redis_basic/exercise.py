@@ -22,12 +22,12 @@ Redis client as a private variable"""
         return random_key
 
     def get(self, key: str, fn: Optional[Callable] = None) ->
-    Union[str, int, None]:
+    Union[str, int, bytes, None]:
         retrive_data = self._redis.get(key)
 
         if retrive_data is None:
             return None
-        return fn(retrive_data) if (fn and callable(fn)) else retrive_data
+        return fn(retrive_data)
 
     def get_str(self, key: str) -> str:
         '''parametrize Cache.get with correct conversion function'''
@@ -36,5 +36,9 @@ Redis client as a private variable"""
 
     def get_int(self, key: str) -> Union[int, None]:
         '''parametrize Cache.get with correct conversion function'''
-        return self.get(key, fn=lambda data: int(data)
-                        if isinstance(data, byte) else data)
+        value = self._get(key)
+        try:
+            value = int(value.decode("utf-8"))
+        except Exception:
+            value = 0
+        return value
