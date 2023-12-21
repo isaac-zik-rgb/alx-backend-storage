@@ -23,6 +23,8 @@ Redis client as a private variable"""
 
     def get(self, key: str, fn: Optional[Callable] = None) ->
     Union[str, int, bytes, None]:
+        '''convert the data back to the desired format'''
+
         retrive_data = self._redis.get(key)
 
         if retrive_data is None:
