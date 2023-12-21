@@ -29,10 +29,12 @@ Redis client as a private variable"""
             return None
         return fn(retrive_data) if (fn and callable(fn)) else retrive_data
 
-    def get_str(self, key: str) -> Union[str, None]:
-        return self.get(key, fn=lambda data: data.decode("utf-8")
-                        if isinstance(data, byte) else data)
+    def get_str(self, key: str) -> str:
+        '''parametrize Cache.get with correct conversion function'''
+        value = self._redis.get(key)
+        return value.decode("utf-8")
 
     def get_int(self, key: str) -> Union[int, None]:
+        '''parametrize Cache.get with correct conversion function'''
         return self.get(key, fn=lambda data: int(data)
                         if isinstance(data, byte) else data)
