@@ -21,26 +21,24 @@ Redis client as a private variable"""
         self._redis.set(random_key, data)
         return random_key
 
-    def get(self, key: str, fn: Optional[Callable] = None) ->
-    Union[str, int, bytes, None]:
+    def get(self, key: str,
+            fn: Optional[Callable] = None) -> Union[str, bytes, int, float]:
         '''convert the data back to the desired format'''
-
-        retrive_data = self._redis.get(key)
-
+        value = self._redis.get(key)
         if fn:
-            value = fn(retrive_data)
-        return value
+            value = fn(value)
+            return value
 
     def get_str(self, key: str) -> str:
         '''parametrize Cache.get with correct conversion function'''
         value = self._redis.get(key)
         return value.decode("utf-8")
 
-    def get_int(self, key: str) -> Union[int, None]:
-        '''parametrize Cache.get with correct conversion function'''
-        value = self._get(key)
-        try:
-            value = int(value.decode("utf-8"))
-        except Exception:
-            value = 0
-        return value
+def get_int(self, key: str) -> int:
+    '''parametrize Cache.get with correct conversion function'''
+    value = self._redis.get(key)
+    try:
+        value = int(value.decode("utf-8"))
+    except Exception:
+        value = 0
+    return value
