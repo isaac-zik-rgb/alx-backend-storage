@@ -6,6 +6,19 @@ data in Redis using the random key and return the key."""
 import uuid
 import redis
 from typing import Union, Optional, Callable
+from functools import wraps
+
+
+def count_calls(method: Callable) -> Callable:
+    '''count how many times methods of Cache class are called'''
+    key = method.__qualname__
+
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        """warp the decorator function and return the wrapper"""
+        self._redis.incr(key)
+        return method(self, *arg, **kwargs)
+    return wrapper
 
 
 class Cache:
